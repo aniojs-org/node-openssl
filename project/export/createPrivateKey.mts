@@ -49,6 +49,7 @@ export function createPrivateKey(
 
 	return {
 		value: privateKey,
-		isEncrypted
+		isEncrypted,
+		passphraseSource: pkPassphraseSource
 	}
 }
