@@ -11,7 +11,7 @@ export function createPKCS12File(
 	outFile: string
 ) {
 	const tmpCertFile = secureTemporaryFile(cert, ".crt")
-	const tmpPrivateKeyFile = secureTemporaryFile(pkey, ".key")
+	const tmpPrivateKeyFile = secureTemporaryFile(pkey.value, ".key")
 	const tmpOutFile = secureTemporaryFile("", ".p12")
 
 	try {

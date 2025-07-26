@@ -39,5 +39,7 @@ export function createPrivateKey(
 	const privateKey = readFileStringSync(tmpPrivateKeyLocation)
 	unlinkSync(tmpPrivateKeyLocation)
 
-	return privateKey as PrivateKey
+	return {
+		value: privateKey
+	}
 }

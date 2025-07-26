@@ -35,7 +35,7 @@ export function createCertificateSigningRequest(
 
 	const tmpOpenSSLConfLocation = secureTemporaryFile(opensslRequestConf, ".conf")
 	const tmpCSRLocation = secureTemporaryFile("", ".csr")
-	const tmpPrivateKeyLocation = secureTemporaryFile(privateKey, ".key")
+	const tmpPrivateKeyLocation = secureTemporaryFile(privateKey.value, ".key")
 
 	try {
 		invokeOpenSSL([

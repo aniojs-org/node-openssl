@@ -1,1 +1,3 @@
-export type PrivateKey = string & {__privateKeyBrand: any}
+export type PrivateKey = {
+	value: string
+}

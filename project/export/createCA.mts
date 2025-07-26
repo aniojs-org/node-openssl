@@ -18,7 +18,7 @@ export function createCA(
 	mkdirSync(path.join(caHomeDir, "certs"), mkdirOptions)
 	mkdirSync(path.join(caHomeDir, "db"), mkdirOptions)
 
-	writeFile("ca.key", options.privateKey)
+	writeFile("ca.key", options.privateKey.value)
 	writeFile("ca.crt", options.certificate)
 
 	writeFile("db/crt.srl", "01\n")

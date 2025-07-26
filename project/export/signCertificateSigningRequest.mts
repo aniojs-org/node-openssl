@@ -19,7 +19,7 @@ export function signCertificateSigningRequest(
 	certificate: SignedCertificate
 	certificateSerialNumber: string
 } {
-	if (typeof signer === "string") {
+	if (!("homeDir" in signer)) {
 		return createSelfSignedCertificateFromCSR(csr ,options, signer)
 	}
 

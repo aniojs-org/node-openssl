@@ -26,7 +26,7 @@ export function createSelfSignedCertificateFromCSR(
 	const tmpCSRFile = secureTemporaryFile(csr, ".csr")
 	const tmpExtensionsFile = secureTemporaryFile(extensions, ".conf")
 	const tmpCertFile = secureTemporaryFile("", ".cert")
-	const tmpPrivateKey = secureTemporaryFile(privateKey, ".key")
+	const tmpPrivateKey = secureTemporaryFile(privateKey.value, ".key")
 
 	try {
 		invokeOpenSSL([
