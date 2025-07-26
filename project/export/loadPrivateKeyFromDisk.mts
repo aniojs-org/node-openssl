@@ -9,6 +9,7 @@ export function loadPrivateKeyFromDisk(
 ): PrivateKey {
 	return {
 		value: fs.readFileSync(src).toString(),
+		// todo: detect, don't rely on pkPassphraseSource
 		isEncrypted: _isValidPassphraseSource(pkPassphraseSource),
 		passphraseSource: pkPassphraseSource ?? "none"
 	}
