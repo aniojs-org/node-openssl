@@ -9,6 +9,7 @@ import {secureTemporaryFile} from "#~src/secureTemporaryFile.mts"
 import {invokeOpenSSL} from "./invokeOpenSSL.mts"
 import {readFileStringSync, removeSync} from "@aniojs/node-fs"
 import {getSerialOfCertificate} from "#~export/getSerialOfCertificate.mts"
+import {_isValidPassphraseSource} from "./_isValidPassphraseSource.mts"
 
 export function createSelfSignedCertificateFromCSR(
 	csr: CertificateSigningRequest,
@@ -29,7 +30,7 @@ export function createSelfSignedCertificateFromCSR(
 	const tmpPrivateKey = secureTemporaryFile(privateKey.value, ".key")
 
 	try {
-		invokeOpenSSL([
+		const opensslArgs = [
 			"x509",
 			"-req",
 			"-in",
@@ -45,7 +46,18 @@ export function createSelfSignedCertificateFromCSR(
 			tmpExtensionsFile,
 			`-extensions`,
 			"my_cert_extensions"
-		])
+		]
+
+		const {passphraseSource} = privateKey
+
+		if (_isValidPassphraseSource(passphraseSource)) {
+			if (passphraseSource.kind === "file") {
+				opensslArgs.push(`-passin`)
+				opensslArgs.push(`file:${passphraseSource.filePath}`)
+			}
+		}
+
+		invokeOpenSSL(opensslArgs)
 	} finally {
 		removeSync(tmpPrivateKey)
 	}
