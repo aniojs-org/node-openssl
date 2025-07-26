@@ -1,5 +1,7 @@
 import type {PrivateKeyType} from "@aniojs/node-openssl-config-gen"
 import type {PrivateKey} from "./PrivateKey.mts"
+import type {PrivateKeyPassphraseSource} from "./PrivateKeyPassphraseSource.mts"
+import {_isValidPassphraseSource} from "#~src/_isValidPassphraseSource.mts"
 import {secureTemporaryFile} from "#~src/secureTemporaryFile.mts"
 import {readFileStringSync} from "@aniojs/node-fs"
 import {unlinkSync} from "node:fs"
@@ -7,8 +9,9 @@ import {invokeOpenSSL} from "#~src/invokeOpenSSL.mts"
 
 export function createPrivateKey(
 	privateKeyType: PrivateKeyType,
-	encrypted?: boolean
+	pkPassphraseSource?: PrivateKeyPassphraseSource|undefined
 ): PrivateKey {
+	const isEncrypted = _isValidPassphraseSource(pkPassphraseSource)
 	const tmpPrivateKeyLocation = secureTemporaryFile()
 
 	const opensslArgs: string[] = [
@@ -26,7 +29,7 @@ export function createPrivateKey(
 		opensslArgs.push(`ec_paramgen_curve:${privateKeyType.curve}`)
 	}
 
-	if (encrypted !== false) {
+	if (isEncrypted) {
 		opensslArgs.push("-aes-256-cbc")
 	}
 
@@ -41,6 +44,6 @@ export function createPrivateKey(
 
 	return {
 		value: privateKey,
-		isEncrypted: encrypted !== false
+		isEncrypted
 	}
 }
