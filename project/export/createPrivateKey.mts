@@ -31,6 +31,11 @@ export function createPrivateKey(
 
 	if (isEncrypted) {
 		opensslArgs.push("-aes-256-cbc")
+
+		if (pkPassphraseSource.kind === "file") {
+			opensslArgs.push("-pass")
+			opensslArgs.push(`file:${pkPassphraseSource.filePath}`)
+		}
 	}
 
 	invokeOpenSSL([
