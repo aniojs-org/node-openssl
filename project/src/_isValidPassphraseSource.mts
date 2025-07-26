@@ -2,7 +2,11 @@ import type {PrivateKeyPassphraseSource} from "#~export/PrivateKeyPassphraseSour
 import type {_ValidPassphraseSource} from "./_ValidPassphraseSource.mts"
 
 export function _isValidPassphraseSource(
-	source: PrivateKeyPassphraseSource
+	source: PrivateKeyPassphraseSource|undefined
 ): source is _ValidPassphraseSource {
-	return source !== "none"
+	if (source === "none" || typeof source === "undefined") {
+		return false
+	}
+
+	return true
 }
