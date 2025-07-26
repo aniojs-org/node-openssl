@@ -1,9 +1,9 @@
 import type {PrivateKeyType} from "@aniojs/node-openssl-config-gen"
+import type {PrivateKey} from "./PrivateKey.mts"
 import {secureTemporaryFile} from "#~src/secureTemporaryFile.mts"
 import {readFileStringSync} from "@aniojs/node-fs"
 import {unlinkSync} from "node:fs"
 import {invokeOpenSSL} from "#~src/invokeOpenSSL.mts"
-import type {PrivateKey} from "./PrivateKey.mts"
 
 export function createPrivateKey(
 	privateKeyType: PrivateKeyType,
