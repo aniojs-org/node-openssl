@@ -8,6 +8,7 @@ import {
 import {secureTemporaryFile} from "#~src/secureTemporaryFile.mts"
 import {invokeOpenSSL} from "#~src/invokeOpenSSL.mts"
 import {readFileStringSync, removeSync} from "@aniojs/node-fs"
+import {_isValidPassphraseSource} from "#~src/_isValidPassphraseSource.mts"
 
 export function createCertificateSigningRequest(
 	privateKey: PrivateKey,
@@ -38,7 +39,7 @@ export function createCertificateSigningRequest(
 	const tmpPrivateKeyLocation = secureTemporaryFile(privateKey.value, ".key")
 
 	try {
-		invokeOpenSSL([
+		const opensslArgs = [
 			"req",
 			"-new",
 			"-config",
@@ -48,7 +49,18 @@ export function createCertificateSigningRequest(
 			tmpPrivateKeyLocation,
 			"-out",
 			tmpCSRLocation
-		])
+		]
+
+		const {passphraseSource} = privateKey
+
+		if (_isValidPassphraseSource(passphraseSource)) {
+			if (passphraseSource.kind === "file") {
+				opensslArgs.push(`-passin`)
+				opensslArgs.push(`file:${passphraseSource.filePath}`)
+			}
+		}
+
+		invokeOpenSSL(opensslArgs)
 	} finally {
 		removeSync(tmpPrivateKeyLocation)
 		removeSync(tmpOpenSSLConfLocation)
