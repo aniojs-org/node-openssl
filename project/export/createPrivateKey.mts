@@ -50,6 +50,6 @@ export function createPrivateKey(
 	return {
 		value: privateKey,
 		isEncrypted,
-		passphraseSource: pkPassphraseSource
+		passphraseSource: pkPassphraseSource ?? "none"
 	}
 }
