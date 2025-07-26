@@ -40,6 +40,7 @@ export function createPrivateKey(
 	unlinkSync(tmpPrivateKeyLocation)
 
 	return {
-		value: privateKey
+		value: privateKey,
+		isEncrypted: encrypted !== false
 	}
 }
